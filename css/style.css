@@ -629,6 +629,14 @@ button:active { transform: scale(.96); }
 [data-theme^="neon-"] .primary { color: #000; }
 [data-theme="neon-dark"] .primary { color: #001a0d; }
 #winnerModal .primary { color: #ffffff !important; }
+
+/* レビュー画面の送信ボタンはこの画面のテーマカラー(オレンジ)から派生させる(色の統合) */
+#reviewScreen .primary {
+  background: linear-gradient(135deg, var(--menu-border-review), color-mix(in srgb, var(--menu-border-review) 70%, black)) !important;
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+  box-shadow: 0 6px 16px rgba(249,115,22,.32);
+}
 [data-theme^="neon-"] .danger { color: #fff; }
 
 .shuffle-animate { animation: shufflePulse 0.3s ease-in-out; }

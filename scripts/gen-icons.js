@@ -60,10 +60,18 @@ function drawIcon(size) {
   const half = size / 2;
 
   const white = [255, 255, 255];
-  const accentGreen = [16, 185, 129]; // ノーマル対戦メニューと同色 (--menu-border-normal: #10b981)
+  // ホーム画面の6つのメニュー色を、色相の順に並べた虹色ホイール
+  const wheelColors = [
+    [249, 115, 22],  // レビュー(オレンジ)  --menu-border-review
+    [245, 158, 11],  // システム設定(アンバー) --menu-border-system
+    [16, 185, 129],  // ノーマル対戦(緑)    --menu-border-normal
+    [6, 182, 212],   // カスタム対戦(シアン) --menu-border-custom
+    [139, 92, 246],  // 対戦履歴(紫)       --menu-border-history
+    [236, 72, 153],  // ルール解説(ピンク)   --menu-border-rule
+  ];
 
-  const ringStep = half * 0.8 / 3.5; // 3 rings within safe zone
   const safeR = half * 0.8;
+  const segmentAngle = (Math.PI * 2) / wheelColors.length;
 
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
@@ -73,12 +81,10 @@ function drawIcon(size) {
 
       let rgb = white;
       if (r <= safeR) {
-        const ringIndex = Math.floor(r / ringStep);
-        if (r < ringStep * 0.55) {
-          rgb = accentGreen; // center dot
-        } else if (ringIndex % 2 === 1) {
-          rgb = accentGreen; // colored ring
-        }
+        let angle = Math.atan2(dy, dx); // -PI..PI
+        if (angle < 0) angle += Math.PI * 2; // 0..2PI
+        const segIndex = Math.floor(angle / segmentAngle) % wheelColors.length;
+        rgb = wheelColors[segIndex];
       }
 
       const idx = (y * size + x) * 4;
