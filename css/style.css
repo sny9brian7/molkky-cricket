@@ -607,6 +607,7 @@ button:active { transform: scale(.96); }
 
 [data-theme^="neon-"] .primary { color: #000; }
 [data-theme="neon-dark"] .primary { color: #001a0d; }
+#winnerModal .primary { color: #ffffff !important; }
 [data-theme^="neon-"] .danger { color: #fff; }
 
 .shuffle-animate { animation: shufflePulse 0.3s ease-in-out; }

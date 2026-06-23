@@ -1445,7 +1445,7 @@ const MATCH_LOG_MAX = 50;
 
 /* 履歴の削除は誤操作防止のための簡易パスワードのみ（本格的な認証ではない）。
    変更したい場合はこの定数を書き換える。 */
-const HISTORY_ADMIN_PASSWORD = '0000';
+const HISTORY_ADMIN_PASSWORD = '0523';
 
 function checkAdminPassword() {
   const input = prompt("管理者パスワードを入力してください(削除の確認用)");
