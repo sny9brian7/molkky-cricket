@@ -146,11 +146,15 @@ function drawIcon(size) {
 
 /* このスクリプトは同心円+ぼかしの「土台」だけを描く。
    文字(「モルクリ！」)は gen-icons-add-text.ps1 が
-   System.Drawingでこの土台の上に合成する。 */
+   System.Drawingでこの土台の上に合成する。
+   ジャギーを減らすため、SS倍の解像度で描いてから平均化縮小する(スーパーサンプリング)。
+   gen-icons-add-text.ps1 側もSS倍のキャンバスに文字を描いてから同様に縮小する必要があるため、
+   土台はSS倍の解像度のまま書き出す(ファイル名にssサフィックスを付ける)。 */
+const SS = 3;
 const outDir = path.join(__dirname, '..', 'icons');
 for (const size of [192, 512]) {
-  const rgba = drawIcon(size);
-  const png = encodePNG(size, size, rgba);
-  fs.writeFileSync(path.join(outDir, `icon-${size}-base.png`), png);
-  console.log(`wrote icon-${size}-base.png (${png.length} bytes)`);
+  const rgba = drawIcon(size * SS);
+  const png = encodePNG(size * SS, size * SS, rgba);
+  fs.writeFileSync(path.join(outDir, `icon-${size}-base-ss.png`), png);
+  console.log(`wrote icon-${size}-base-ss.png (${png.length} bytes, ${size * SS}x${size * SS})`);
 }
