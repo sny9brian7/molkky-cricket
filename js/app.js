@@ -34,15 +34,24 @@ function soundPath(filename) {
   return SOUND_DIR.split('/').map(encodeURIComponent).join('/') + '/' + encodeURIComponent(filename);
 }
 
-const sounds = {};
+/* スマホ(特にAndroid)では、同じ<audio>要素にcurrentTime=0→play()を連続実行すると、
+   前の再生がまだ処理中のまま次のplay()が割り込んでAbortErrorになり、無音になることがある。
+   種類ごとに複数のAudioインスタンスをプールしてラウンドロビンで使うことで、
+   各再生が常に独立した要素で行われるようにして回避する。 */
+const SOUND_POOL_SIZE = 4;
+const soundPools = {};
+const soundPoolIndex = {};
 Object.keys(SOUND_FILES).forEach((key) => {
-  sounds[key] = new Audio(soundPath(SOUND_FILES[key]));
+  soundPools[key] = Array.from({ length: SOUND_POOL_SIZE }, () => new Audio(soundPath(SOUND_FILES[key])));
+  soundPoolIndex[key] = 0;
 });
 
 function playSE(type) {
   if (!soundEnabled) return;
-  const audio = sounds[type];
-  if (!audio) return;
+  const pool = soundPools[type];
+  if (!pool) return;
+  const audio = pool[soundPoolIndex[type]];
+  soundPoolIndex[type] = (soundPoolIndex[type] + 1) % pool.length;
   audio.currentTime = 0;
   audio.volume = Math.min(1, soundVolume * (SOUND_VOLUME_MULTIPLIER[type] || 1));
   audio.play().catch(() => {});
@@ -438,7 +447,7 @@ let statFreezeIndex = null;
 
 /* ---- 画面遷移 ---- */
 function switchScreen(screenId) {
-  ["topMenuScreen", "setupScreen", "gameScreen", "ruleScreen", "themeConfigScreen", "historyScreen"].forEach(id => {
+  ["topMenuScreen", "setupScreen", "gameScreen", "ruleScreen", "themeConfigScreen", "historyScreen", "reviewScreen"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.toggle("hidden", id !== screenId);
   });
@@ -622,7 +631,7 @@ function buildIntegratedBoardUI() {
   const board = document.getElementById("integratedBoard");
   board.innerHTML = "";
 
-  nums.forEach(num => {
+  [...nums].reverse().forEach(num => {
     const row = document.createElement("div");
     row.className = "skittle-row-btn";
     row.id = `skRow_${num}`;
@@ -1694,6 +1703,59 @@ function confirmReset() {
     document.getElementById("winnerModal").classList.add("hidden");
     document.getElementById("nextSetModal").classList.add("hidden");
     resetSelections(); backToTopMenu();
+  });
+}
+
+/* ---- レビュー送信 ----
+   送信先はGoogle Apps Script(GAS)で作ったWebアプリのURL。
+   GoogleスプレッドシートのGASエディタで doPost(e) を実装し、
+   「ウェブアプリとしてデプロイ」した時に発行されるURLをここに貼り替えるだけで動く。
+   未設定(プレースホルダのまま)の場合は送信せずエラーを出す。 */
+const REVIEW_ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycby2Gocj_WmxgpPxdLNWHEVrMi6a6KJCO358h8JhFlQ7wHJIZXhn_2uR2kGVkjgT6iVy/exec';
+
+let reviewRating = 0;
+
+function setReviewRating(n) {
+  reviewRating = n;
+  document.querySelectorAll('#reviewStarRating .star-btn').forEach(el => {
+    el.classList.toggle('filled', Number(el.dataset.star) <= n);
+  });
+}
+
+function resetReviewForm() {
+  reviewRating = 0;
+  document.querySelectorAll('#reviewStarRating .star-btn').forEach(el => el.classList.remove('filled'));
+  ['reviewBugInput', 'reviewAppImprovementInput', 'reviewRuleImprovementInput', 'reviewCommentInput'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+
+function submitReview() {
+  if (reviewRating === 0) { showToast("評価(★)を選択してください。"); return; }
+  if (REVIEW_ENDPOINT_URL.indexOf('PASTE_YOUR') === 0) {
+    showToast("レビュー送信先が未設定です。開発者に連絡してください。");
+    return;
+  }
+
+  const payload = {
+    rating: reviewRating,
+    bug: document.getElementById('reviewBugInput').value.trim(),
+    appImprovement: document.getElementById('reviewAppImprovementInput').value.trim(),
+    ruleImprovement: document.getElementById('reviewRuleImprovementInput').value.trim(),
+    comment: document.getElementById('reviewCommentInput').value.trim(),
+    sentAt: new Date().toISOString()
+  };
+
+  fetch(REVIEW_ENDPOINT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // text/plainでCORSプリフライトを避ける(GAS側はJSONとしてparseする)
+    body: JSON.stringify(payload)
+  }).then(() => {
+    showToast("レビューを送信しました。ありがとうございます！");
+    resetReviewForm();
+    backToTopMenu();
+  }).catch(() => {
+    showToast("送信に失敗しました。通信環境を確認して再度お試しください。");
   });
 }
 

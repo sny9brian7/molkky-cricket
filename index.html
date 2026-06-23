@@ -85,6 +85,17 @@
           </div>
           <div class="menu-item-arrow">›</div>
         </button>
+
+        <button class="menu-item-btn" id="menuBtnReview" onclick="switchScreen('reviewScreen')">
+          <div class="menu-item-icon" style="color:var(--menu-border-review);">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7L2 9.5l7.1-.6z"/></svg>
+          </div>
+          <div class="menu-item-body">
+            <div class="menu-item-title">レビュー</div>
+            <div class="menu-item-desc">感想・バグ報告・改善提案を送る</div>
+          </div>
+          <div class="menu-item-arrow">›</div>
+        </button>
       </div>
     </div>
   </div>
@@ -649,6 +660,45 @@
       <hr class="section-divider">
       <button class="danger large-btn" onclick="confirmClearHistory()" style="width:100%; margin-bottom:10px;">履歴をすべて削除</button>
       <button class="secondary large-btn" onclick="backToTopMenu()" style="width:100%;">‹ メインメニューに戻る</button>
+    </div>
+  </div>
+
+  <!-- ============== REVIEW ============== -->
+  <div id="reviewScreen" class="hidden">
+    <div class="topbar">
+      <button class="theme-btn" onclick="backToTopMenu()">‹ MENU</button>
+    </div>
+    <div class="card">
+      <div class="screen-header">
+        <div class="setup-title screen-title-sm">レビュー</div>
+        <div class="setup-subtitle">FEEDBACK</div>
+      </div>
+
+      <div class="field-label" style="text-align:center;">評価（必須）</div>
+      <div class="star-rating" id="reviewStarRating">
+        <span class="star-btn" data-star="1" onclick="setReviewRating(1)">★</span>
+        <span class="star-btn" data-star="2" onclick="setReviewRating(2)">★</span>
+        <span class="star-btn" data-star="3" onclick="setReviewRating(3)">★</span>
+        <span class="star-btn" data-star="4" onclick="setReviewRating(4)">★</span>
+        <span class="star-btn" data-star="5" onclick="setReviewRating(5)">★</span>
+      </div>
+
+      <hr class="section-divider">
+      <div class="field-label">アプリのバグ（あれば）</div>
+      <textarea id="reviewBugInput" rows="3" placeholder="例: ○○の画面で△△すると表示がおかしい、など"></textarea>
+
+      <div class="field-label" style="margin-top:14px;">アプリの改善点</div>
+      <textarea id="reviewAppImprovementInput" rows="3" placeholder="UI・操作性・機能などへの要望"></textarea>
+
+      <div class="field-label" style="margin-top:14px;">ルールの改善点</div>
+      <textarea id="reviewRuleImprovementInput" rows="3" placeholder="ゲームルール自体への意見"></textarea>
+
+      <div class="field-label" style="margin-top:14px;">感想・その他</div>
+      <textarea id="reviewCommentInput" rows="3" placeholder="自由にどうぞ"></textarea>
+
+      <hr class="section-divider">
+      <button type="button" class="primary large-btn" onclick="submitReview()">レビューを送信</button>
+      <button class="secondary large-btn" onclick="backToTopMenu()" style="width:100%; margin-top:10px;">‹ メインメニューに戻る</button>
     </div>
   </div>
 

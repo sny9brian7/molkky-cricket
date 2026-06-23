@@ -77,6 +77,7 @@
   --menu-border-system: #f59e0b;
   --menu-border-rule: #ec4899;
   --menu-border-history: #8b5cf6;
+  --menu-border-review: #f97316;
 }
 
 /* ---- PASTEL - DARK ---- */
@@ -151,6 +152,7 @@
   --menu-neon-left-system: #c48100;
   --menu-neon-left-rule: #e6003a;
   --menu-neon-left-history: #7c3aed;
+  --menu-neon-left-review: #c2410c;
 }
 
 /* ---- NEON - DARK ---- */
@@ -202,6 +204,7 @@
   --menu-neon-left-system: #3a2700;
   --menu-neon-left-rule: #410316;
   --menu-neon-left-history: #2e1065;
+  --menu-neon-left-review: #431407;
 }
 
 /* ---- NEON - LIGHT ---- */
@@ -305,11 +308,13 @@ strong { color: var(--txt); font-weight: 900; }
 #menuBtnSystem { border-color: var(--menu-border-system); }
 #menuBtnRule { border-color: var(--menu-border-rule); }
 #menuBtnHistory { border-color: var(--menu-border-history); }
+#menuBtnReview { border-color: var(--menu-border-review); }
 
 /* ホームから各画面に遷移した先のカードの縁を、それぞれのメニューの色に合わせる */
 #themeConfigScreen > .card { border-color: var(--menu-border-system); border-width: 2px; }
 #ruleScreen > .card { border-color: var(--menu-border-rule); border-width: 2px; }
 #historyScreen > .card { border-color: var(--menu-border-history); border-width: 2px; }
+#reviewScreen > .card { border-color: var(--menu-border-review); border-width: 2px; }
 #setupCardContainer.mode-normal { border-color: var(--menu-border-normal); border-width: 2px; }
 #setupCardContainer.mode-custom { border-color: var(--menu-border-custom); border-width: 2px; }
 
@@ -317,6 +322,7 @@ strong { color: var(--txt); font-weight: 900; }
 #themeConfigScreen > .card::before,
 #ruleScreen > .card::before,
 #historyScreen > .card::before,
+#reviewScreen > .card::before,
 #setupCardContainer.mode-normal::before,
 #setupCardContainer.mode-custom::before {
   display: none !important;
@@ -332,6 +338,7 @@ strong { color: var(--txt); font-weight: 900; }
 [data-theme^="neon-"] #menuBtnSystem { border-left: 5px solid var(--menu-neon-left-system); }
 [data-theme^="neon-"] #menuBtnRule { border-left: 5px solid var(--menu-neon-left-rule); }
 [data-theme^="neon-"] #menuBtnHistory { border-left: 5px solid var(--menu-neon-left-history); }
+[data-theme^="neon-"] #menuBtnReview { border-left: 5px solid var(--menu-neon-left-review); }
 [data-theme^="neon-"] .menu-item-btn:active { background: var(--sub); }
 
 /* ============== CONFIG SELECTION GRID ============== */
@@ -506,6 +513,20 @@ input[type="text"], input[type="number"], select {
   padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 15px; background: var(--card); color: var(--txt);
 }
 input[type="text"]:focus, input[type="number"]:focus, select:focus { border-color: var(--cb); box-shadow: 0 0 0 3px rgba(29,78,216,0.15); }
+
+textarea {
+  width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 15px;
+  font-family: var(--font-body); font-weight: 500; margin-bottom: 4px; background: var(--sub); color: var(--txt); outline: none;
+  resize: vertical; transition: border-color .15s, box-shadow .15s;
+}
+[data-theme^="neon-"] textarea { padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); color: var(--txt); }
+textarea:focus { border-color: var(--menu-border-review); box-shadow: 0 0 0 3px rgba(249,115,22,0.15); }
+
+/* ============== STAR RATING (REVIEW) ============== */
+.star-rating { display: flex; gap: 8px; justify-content: center; margin-bottom: 8px; }
+.star-btn { font-size: 38px; line-height: 1; color: var(--border); cursor: pointer; transition: transform .1s, color .1s; user-select: none; }
+.star-btn:active { transform: scale(0.85); }
+.star-btn.filled { color: var(--menu-border-review); }
 
 .range-input { width: 100%; margin: 10px 0; height: 6px; --range-accent: var(--green); }
 
