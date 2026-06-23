@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#059669" />
+<meta name="description" content="モルックリケット - モルックとダーツクリケットを融合させた多人数対戦スコアラー" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="モルックリケット" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="icon" href="icons/icon-192.png" />
+<title>モルックリケット | MOLKKY CRICKET</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- ============== TOP MENU ============== -->
+  <div id="topMenuScreen">
+    <div class="card hero-card">
+      <div class="menu-title-area">
+        <div class="setup-title">MOLKKY<br>CRICKET</div>
+        <div class="setup-subtitle">モルックリケット</div>
+      </div>
+
+      <div class="menu-list">
+        <button class="menu-item-btn" id="menuBtnNormal" onclick="openSetup('normal')">
+          <div class="menu-item-icon" style="color:var(--menu-border-normal);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div class="menu-item-body">
+            <div class="menu-item-title">ノーマル対戦</div>
+            <div class="menu-item-desc">2人対戦・標準ルールでサクッと開始</div>
+          </div>
+          <div class="menu-item-arrow">›</div>
+        </button>
+
+        <button class="menu-item-btn" id="menuBtnCustom" onclick="openSetup('custom')">
+          <div class="menu-item-icon" style="color:var(--menu-border-custom);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+          </div>
+          <div class="menu-item-body">
+            <div class="menu-item-title">カスタム対戦</div>
+            <div class="menu-item-desc">最大4人・セット数・ハンディキャップなど自由設定</div>
+          </div>
+          <div class="menu-item-arrow">›</div>
+        </button>
+
+        <button class="menu-item-btn" id="menuBtnSystem" onclick="switchScreen('themeConfigScreen')">
+          <div class="menu-item-icon" style="color:var(--menu-border-system);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82A1.65 1.65 0 0 0 3 16H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </div>
+          <div class="menu-item-body">
+            <div class="menu-item-title">システム設定</div>
+            <div class="menu-item-desc">カラーテーマ・ビジュアルスタイルを変更</div>
+          </div>
+          <div class="menu-item-arrow">›</div>
+        </button>
+
+        <button class="menu-item-btn" id="menuBtnRule" onclick="switchScreen('ruleScreen')">
+          <div class="menu-item-icon" style="color:var(--menu-border-rule);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="menu-item-body">
+            <div class="menu-item-title">ルール解説</div>
+            <div class="menu-item-desc">基本ルール・得点・セオリーを解説</div>
+          </div>
+          <div class="menu-item-arrow">›</div>
+        </button>
+
+        <button class="menu-item-btn" id="menuBtnHistory" onclick="switchScreen('historyScreen')">
+          <div class="menu-item-icon" style="color:var(--menu-border-history);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/></svg>
+          </div>
+          <div class="menu-item-body">
+            <div class="menu-item-title">対戦履歴</div>
+            <div class="menu-item-desc">過去の試合結果を確認</div>
+          </div>
+          <div class="menu-item-arrow">›</div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============== THEME CONFIG ============== -->
+  <div id="themeConfigScreen" class="hidden">
+    <div class="topbar">
+      <button class="theme-btn" onclick="backToTopMenu()">‹ MENU</button>
+    </div>
+    <div class="card">
+      <div class="screen-header">
+        <div class="setup-title screen-title-sm">システム設定</div>
+        <div class="setup-subtitle">THEME CONFIG</div>
+      </div>
+
+      <div class="field-label">1. SELECT STYLE（デザインスタイル）</div>
+      <div class="theme-select-grid">
+        <div class="theme-opt-box active" id="style-opt-pastel" onclick="selectStyleConfig('pastel')">PASTEL</div>
+        <div class="theme-opt-box" id="style-opt-neon" onclick="selectStyleConfig('neon')">NEON</div>
+      </div>
+      <div class="field-label" style="margin-top:18px;">2. SELECT COLOR（カラーモード）</div>
+      <div class="theme-select-grid">
+        <div class="theme-opt-box active" id="color-opt-light" onclick="selectColorConfig('light')">LIGHT</div>
+        <div class="theme-opt-box" id="color-opt-dark" onclick="selectColorConfig('dark')">DARK</div>
+      </div>
+
+      <hr class="section-divider">
+      <div class="field-label">3. SOUND（サウンド設定）</div>
+      <div class="radio-row" style="margin-bottom:10px;">
+        <label class="radio-chip" id="lblSoundOn">
+          <input type="radio" name="soundSwitch" value="on" checked onchange="handleSoundToggle()"> ON
+        </label>
+        <label class="radio-chip" id="lblSoundOff">
+          <input type="radio" name="soundSwitch" value="off" onchange="handleSoundToggle()"> OFF（ミュート）
+        </label>
+      </div>
+      <div id="soundVolumeWrapper" class="config-subpanel">
+        <div class="field-label" id="soundVolumeLabel">音量: 70%</div>
+        <input type="range" id="soundVolumeInput" min="0" max="100" value="70" step="5" class="range-input" oninput="updateSoundVolume()">
+      </div>
+
+      <hr class="section-divider">
+      <button class="secondary large-btn" onclick="backToTopMenu()">‹ メインメニューに戻る</button>
+    </div>
+  </div>
+
+  <!-- ============== SETUP ============== -->
+  <div id="setupScreen" class="hidden">
+    <div class="topbar">
+      <button class="theme-btn" onclick="backToTopMenu()">‹ MENU</button>
+    </div>
+
+    <div class="card" id="setupCardContainer">
+      <div class="screen-header">
+        <div class="setup-title screen-title-sm" id="setupMainTitle">MOLKKY</div>
+        <div class="setup-subtitle" id="setupSubTitle">Cricket Scoreboard</div>
+      </div>
+
+      <div id="customPlayerCountArea">
+        <div class="setup-section-title">PLAYER COUNT（対戦人数設定）<button type="button" class="info-btn" onclick="showInfoModal('PLAYER COUNT', '2人だけの対戦だけでなく、最大<strong>4人での大乱戦</strong>が可能に。参加者全員がオープンするまでスキットルはクローズされないため、<strong>独走する一人をみんなで囲んで阻止する</strong>熱い駆け引きが生まれます。')">?</button></div>
+        <div class="count-row">
+          <label class="radio-chip" id="btnCount2">
+            <input type="radio" name="playerCount" value="2" checked onchange="handlePlayerCountChange()"> 2人対戦
+          </label>
+          <label class="radio-chip" id="btnCount3">
+            <input type="radio" name="playerCount" value="3" onchange="handlePlayerCountChange()"> 3人対戦
+          </label>
+          <label class="radio-chip" id="btnCount4">
+            <input type="radio" name="playerCount" value="4" onchange="handlePlayerCountChange()"> 4人対戦
+          </label>
+        </div>
+      </div>
+
+      <div class="setup-section-title">NAMES（プレイヤー個別名）</div>
+
+      <div class="field-label" style="color: var(--ca);">PLAYER A</div>
+      <input type="text" id="playerAInput" placeholder="名前 / チーム名 (A)">
+
+      <button type="button" class="swap-btn" id="swapABBtn" onclick="swapPlayersData(0, 1)">⇄ AとBを入れ替え</button>
+
+      <div class="field-label" style="color: var(--cb);">PLAYER B</div>
+      <input type="text" id="playerBInput" placeholder="名前 / チーム名 (B)">
+
+      <div id="playerCWrapper" class="hidden">
+        <button type="button" class="swap-btn" id="swapBCBtn" onclick="swapPlayersData(1, 2)">⇄ BとCを入れ替え</button>
+        <div class="field-label" style="color: var(--cc);">PLAYER C</div>
+        <input type="text" id="playerCInput" placeholder="名前 / チーム名 (C)">
+      </div>
+
+      <div id="playerDWrapper" class="hidden">
+        <button type="button" class="swap-btn" id="swapCDBtn" onclick="swapPlayersData(2, 3)">⇄ CとDを入れ替え</button>
+        <div class="field-label" style="color: var(--cd);">PLAYER D</div>
+        <input type="text" id="playerDInput" placeholder="名前 / チーム名 (D)">
+      </div>
+
+      <div id="matchFormatArea" class="hidden">
+        <hr class="section-divider">
+        <div class="setup-section-title">MATCH FORMAT<button type="button" class="info-btn" onclick="showInfoModal('MATCH FORMAT', '1セット完結だけでなく、<strong>2本先取〜最大5本先取のセット制形式</strong>に対応。セット間の先攻・後攻の順番を自由に設定でき、本格的な試合を楽しめます。')">?</button></div>
+        <div class="field-label" id="matchTargetSliderLabel">試合の勝利条件: 1セット先取</div>
+        <input type="range" id="matchTargetInput" min="1" max="5" value="1" step="1" class="range-input" oninput="updateMatchTargetSliderLabel()">
+      </div>
+
+      <div id="burstConfigArea" class="hidden">
+        <hr class="section-divider">
+        <div class="setup-section-title">DISQUALIFIED（連続ミス失格）<button type="button" class="info-btn" onclick="showInfoModal('DISQUALIFIED', 'ONにすると、<strong>3〜6回(スライダーで自由設定)連続でMISS(0マーク)したプレイヤーがそのセットを失格</strong>。サバイバル仕様で、たった1回外すだけで終わるという極限の緊張感がゲームを引き立てます。')">?</button></div>
+        <div class="small" style="margin-bottom:10px;">指定回数連続でMISS(0マーク)すると、そのセットが失格となる機能</div>
+        <div class="radio-row" style="margin-bottom:10px;">
+          <label class="radio-chip" id="lblBurstOff">
+            <input type="radio" name="burstSwitch" value="off" checked onchange="handleBurstToggle()"> 無効
+          </label>
+          <label class="radio-chip" id="lblBurstOn">
+            <input type="radio" name="burstSwitch" value="on" onchange="handleBurstToggle()"> 有効にする
+          </label>
+        </div>
+        <div id="burstCountWrapper" class="hidden config-subpanel">
+          <div class="field-label" id="burstSliderLabel">失格となる連続ミス本数: 3回</div>
+          <input type="range" id="burstCountInput" min="3" max="6" value="3" step="1" class="range-input" oninput="updateBurstSliderLabel()">
+        </div>
+      </div>
+
+      <div id="handicapToggleArea" class="hidden">
+        <hr class="section-divider">
+        <div class="setup-section-title">HANDICAP SYSTEM<button type="button" class="info-btn" onclick="showInfoModal('HANDICAP', 'ONにすると、プレイヤーごとに<strong>初期スコアや特定スキットルの初期マーク数を付与</strong>できます。初心者と上級者が混ざった試合でも実力差を補正し、全員が白熱できるゲームにできます。')">?</button></div>
+        <div class="small" style="margin-bottom:10px;">ハンデ機能（初期スコア・初期マーク）の有効化</div>
+        <div class="radio-row">
+          <label class="radio-chip" id="lblHandicapOff">
+            <input type="radio" name="handicapSwitch" value="off" checked onchange="handleHandicapToggle()"> ハンデ無し
+          </label>
+          <label class="radio-chip" id="lblHandicapOn">
+            <input type="radio" name="handicapSwitch" value="on" onchange="handleHandicapToggle()"> ハンデを設定する
+          </label>
+        </div>
+      </div>
+
+      <div id="handicapConfigArea" class="hidden config-subpanel config-subpanel-dashed">
+        <div id="handicapScoresGrid" class="handicap-scores-grid">
+          <div>
+            <div class="field-label">A 初期スコア</div>
+            <input type="number" id="handicapScoreA" value="0" min="0">
+          </div>
+          <div>
+            <div class="field-label">B 初期スコア</div>
+            <input type="number" id="handicapScoreB" value="0" min="0">
+          </div>
+          <div id="handicapScoreCWrap" class="hidden">
+            <div class="field-label">C 初期スコア</div>
+            <input type="number" id="handicapScoreC" value="0" min="0">
+          </div>
+          <div id="handicapScoreDWrap" class="hidden">
+            <div class="field-label">D 初期スコア</div>
+            <input type="number" id="handicapScoreD" value="0" min="0">
+          </div>
+        </div>
+
+        <div class="field-label" style="margin-bottom:8px;">各スキットルの初期マーク数設定</div>
+        <div id="handicapMarksContainer"></div>
+      </div>
+
+      <div id="bonusMarksArea">
+        <hr class="section-divider">
+        <div class="setup-section-title">BONUS MARKS<button type="button" class="info-btn" onclick="showInfoModal('BONUS MARKS', '通常の「DOUBLE(×2)」に加え、<strong>「TRIPLE(×3)」ボーナス</strong>を切り替え可能。独自のルールと組み合わせは自由――プレイヤー独自の縛りを設けてゲームをカスタマイズするのも上級者の楽しみ方です。')">?</button></div>
+        <div class="small" style="margin-bottom:10px;">DOUBLE(×2)・TRIPLE(×3)マークボーナスの有効化</div>
+        <div class="bonus-row">
+          <label class="toggle-chip double" id="lblChkDouble">
+            <input type="checkbox" id="chkDouble" checked onchange="syncCheckboxChips()">
+            ×2 &nbsp;DOUBLE
+          </label>
+          <label class="toggle-chip triple" id="lblChkTriple">
+            <input type="checkbox" id="chkTriple" onchange="syncCheckboxChips()">
+            ×3 &nbsp;TRIPLE
+          </label>
+        </div>
+      </div>
+
+      <div id="throwsPerTurnArea">
+        <hr class="section-divider">
+        <div class="setup-section-title">THROWS / TURN<button type="button" class="info-btn" onclick="showInfoModal('THROWS / TURN', '1ターンに投げる本数を、<strong>「1本」「2本(標準)」「3本」</strong>から選択可能。3本にすると加点とマークが網のように飛び交う乱戦になります。')">?</button></div>
+        <div class="small" style="margin-bottom:10px;">プレイヤーが1ターンに投げられる本数</div>
+        <div class="th-row">
+          <label class="radio-chip" id="btnThrow1">
+            <input type="radio" name="throwCount" value="1" onchange="syncThrowChips()"> 1 THROW
+          </label>
+          <label class="radio-chip" id="btnThrow2">
+            <input type="radio" name="throwCount" value="2" checked onchange="syncThrowChips()"> 2 THROWS
+          </label>
+          <label class="radio-chip" id="btnThrow3">
+            <input type="radio" name="throwCount" value="3" onchange="syncThrowChips()"> 3 THROWS
+          </label>
+        </div>
+      </div>
+
+      <div id="openMarksConfigArea">
+        <hr class="section-divider">
+        <div class="setup-section-title">OPEN MARKS PER SKITTLE<button type="button" class="info-btn" onclick="showInfoModal('OPEN MARKS PER SKITTLE', 'スキットルがオープンするのに必要なマーク数を、標準の<strong>「2マーク」から「3マーク」</strong>に変更可能。陣地の取り合いに深みを持たせられます。すべてのスキットルに対して変更可能です。')">?</button></div>
+        <div class="small" style="margin-bottom:10px;">各スキットルをオープンするのに必要なマーク数</div>
+        <div class="radio-row" style="margin-bottom:16px;">
+          <button type="button" class="secondary bulk-btn" onclick="setAllOpenMarksBulk(2)">一括で 2マーク</button>
+          <button type="button" class="secondary bulk-btn" onclick="setAllOpenMarksBulk(3)">一括で 3マーク</button>
+        </div>
+
+        <div id="customSkittleMarksWrapper">
+          <div class="skittle-marks-grid" id="skittleMarkSetup"></div>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+      <button type="button" class="primary large-btn" onclick="startGame()" style="margin-top:4px;">GAME START</button>
+    </div>
+  </div>
+
+  <!-- ============== GAME ============== -->
+  <div id="gameScreen" class="hidden">
+    <div class="header">
+      <div class="topbar">
+        <button class="theme-btn" onclick="confirmReset()">‹ QUIT</button>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-box">
+          <div class="status-label">TURN</div>
+          <div class="status-value" id="turnText"></div>
+        </div>
+        <div class="status-box" id="statusBoxPlayer">
+          <div class="status-label">PLAYER</div>
+          <div class="status-value"><span id="playerText"></span></div>
+        </div>
+        <div class="status-box">
+          <div class="status-label">THROW</div>
+          <div class="status-value"><span id="throwText"></span></div>
+        </div>
+      </div>
+
+      <div class="scoreboard" id="gameScoreboard"></div>
+    </div>
+
+    <div id="specialNotice" class="notice hidden">
+      <span class="notice-tag">FIRST TURN</span> 先攻1ターン目はマークなし・投げた本数がそのまま得点
+    </div>
+
+    <div class="card">
+      <div class="section-title"><span>BOARD &amp; INPUT</span> タップして選択（もう一度押すと解除）</div>
+      <div class="integrated-board" id="integratedBoard"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-title"><span>ACTION</span></div>
+
+      <div class="action-panel-vertical">
+
+        <div class="action-block block-single">
+          <div class="block-label">SINGLE</div>
+          <div class="block-buttons-row">
+            <button type="button" class="action-sub-btn" id="btnSingle" onclick="selectMarkType('single')">
+              <span class="btn-main-txt">SINGLE</span>
+              <span class="btn-sub-txt">1 MARK</span>
+            </button>
+            <button type="button" class="action-sub-btn" id="btnDouble" onclick="selectMarkType('double')">
+              <span class="btn-main-txt">DOUBLE</span>
+              <span class="btn-sub-txt">2 MARKS</span>
+            </button>
+            <button type="button" class="action-sub-btn" id="btnTriple" onclick="selectMarkType('triple')">
+              <span class="btn-main-txt">TRIPLE</span>
+              <span class="btn-sub-txt">3 MARKS</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="action-block block-multi" onclick="confirmMulti()">
+          <div class="block-label">MULTI</div>
+        </div>
+
+        <div class="action-block block-miss" onclick="quickMiss()">
+          <div class="block-label">MISS / 0 MARKS</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="undo-wrap">
+      <button class="secondary large-btn" style="flex:1;" onclick="confirmUndo()">‹ UNDO</button>
+      <button class="danger large-btn" style="flex:1;" onclick="confirmReset()">✕ RESET</button>
+    </div>
+  </div>
+
+  <!-- ============== RULE SCREEN ============== -->
+  <div id="ruleScreen" class="hidden">
+    <div class="topbar">
+      <button class="theme-btn" onclick="backToTopMenu()">‹ MENU</button>
+    </div>
+
+    <div class="card">
+      <div class="rule-header">ルール解説</div>
+
+      <div class="rule-block">
+        <div class="rule-eyebrow">SECTION 01</div>
+        <div class="rule-h3">勝利条件</div>
+        <div class="qa-list">
+          <div class="qa-item">
+            <div class="qa-q">モルックリケットは普通のモルックと何が違う?</div>
+            <div class="qa-a">モルックに<strong>陣取りの要素を組み合わせたゲーム</strong>。1ターンに<strong>2投まで投げられる</strong>のが基本ルールで、<strong>12ターン終了時に相手よりスコアが高いプレイヤーが勝利</strong>(同点の場合はオープンしたスキットル数が多い方が勝ち)。</div>
+          </div>
+          <div class="qa-item">
+            <div class="qa-q">12ターン待たずに決着がつくことはある?</div>
+            <div class="qa-a">あります。自分が全てのスキットル(6〜12番)をオープンしていて、かつ自分のスコアが相手と同点以上であれば、その場でゲームセット。</div>
+          </div>
+        </div>
+        <div class="rule-summary">
+          <div class="rule-summary-title">POINT</div>
+          <ul>
+            <li>1ターン<strong>2投</strong>、<strong>12ターン</strong>終了時にスコアが高い方が勝利</li>
+            <li>同点なら<strong>オープン数が多い方</strong>が勝ち</li>
+            <li>全オープン＋スコアが同点以上なら<strong>即ゲームセット</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-eyebrow">SECTION 02</div>
+        <div class="rule-h3">オープンとクローズ</div>
+        <div class="qa-list">
+          <div class="qa-item">
+            <div class="qa-q">「オープン」と「クローズ」の条件は?</div>
+            <div class="qa-a">どのスキットルも<strong>合計2マーク</strong>を入れると「オープン」――自分の得点源(陣地)として確保できる。反対にすでに相手がオープンしているスキットルに自分が<strong>2マーク</strong>を入れると「クローズ」――そのスキットルを盤面から排除できる。</div>
+          </div>
+          <div class="qa-item">
+            <div class="qa-q">ゲーム画面にあるDOUBLE(2 MARKS)とは?</div>
+            <div class="qa-a">スキットルは<strong>「直当て」で当てると1投で2マーク扱い</strong>になる。つまりまだ1マークも無い状態からでも、直当てなら<strong>1投で即座にオープン(陣地化)</strong>できる。</div>
+          </div>
+          <div class="qa-item">
+            <div class="qa-q">クローズしたスキットルは二度と使えない?</div>
+            <div class="qa-a">使えない。クローズしたスキットルは<strong>盤面から完全に消滅し、以降は全員マークも加点もできなくなる</strong>。相手の大事な得点源をクローズで潰す――これがモルックリケット最大の妨害戦術。どのスキットルをオープンして陣地を広げ、どのスキットルをクローズして相手の陣地を消すか、その見極めが攻略の鍵。</div>
+          </div>
+        </div>
+        <div class="rule-summary">
+          <div class="rule-summary-title">POINT</div>
+          <ul>
+            <li><strong>合計2マーク</strong>で「オープン」(自分の陣地化)</li>
+            <li>「直当て」なら<strong>1投で2マーク扱い</strong>、最短1投でオープン可能</li>
+            <li>クローズされたスキットルは<strong>盤面から消滅</strong>し誰も使えなくなる</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-eyebrow">SECTION 03</div>
+        <div class="rule-h3">得点の取り方</div>
+        <div class="qa-list">
+          <div class="qa-item">
+            <div class="qa-q">オープン後にどうスコアを伸ばす?</div>
+            <div class="qa-a">自分がオープン済みのスキットルに当てれば、<strong>そのスキットルの数字がそのままスコアに加算</strong>される。さらに、オープン済みのスキットルに「直当て」を決めれば<strong>スキットルの数字の2倍の点数</strong>が一気に入る。12番に直当てなら<strong>一気に24点</strong>。</div>
+          </div>
+          <div class="qa-item">
+            <div class="qa-q">まだ1マーク状態のスキットルに直当てを決めたら?</div>
+            <div class="qa-a">直当てで入る<strong>2マークのうち最初の1マークがオープンに消費</strong>され、<strong>残った1マーク分が通常の得点として</strong>スコアに加算される。</div>
+          </div>
+        </div>
+        <div class="rule-summary">
+          <div class="rule-summary-title">POINT</div>
+          <ul>
+            <li>オープン済みのスキットルに当てると<strong>その数字がそのまま加点</strong></li>
+            <li>オープン済みのスキットルへの「直当て」は<strong>数字の2倍</strong>の点数</li>
+            <li>未オープンのスキットルへの「直当て」は<strong>オープン+通常得点</strong>を同時に獲得</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-eyebrow">SECTION 04</div>
+        <div class="rule-h3">複数本当たった場合(MULTI HIT)</div>
+        <div class="qa-list">
+          <div class="qa-item">
+            <div class="qa-q">スキットルが複数本まとめて倒れたらどう処理する?</div>
+            <div class="qa-a">「MULTI HIT」として処理する。倒れたスキットルの中に<strong>自分がすでにオープンしているものが含まれていれば、倒れた本数の合計がそのままスコアに加算</strong>される。オープン済みの7・8・9番をまとめて倒したら<strong>3点加算</strong>。スキットルの数字ではなく本数がそのまま点数になる点に注意。</div>
+          </div>
+          <div class="qa-item">
+            <div class="qa-q">未オープンと相手オープン済みが混ざって当たった場合は?</div>
+            <div class="qa-a">いずれもまだ自分のものでない番に対しては、<strong>一律で1マークだけが同時に付与</strong>される。1投で複数のスキットルへ一気にマークを刻める布石になり、運が良ければ複数本まとめて一気にオープンも狙える。</div>
+          </div>
+        </div>
+        <div class="rule-summary">
+          <div class="rule-summary-title">POINT</div>
+          <ul>
+            <li>オープン済みへのMULTIは<strong>本数の合計がそのまま加点</strong>(数字ではない)</li>
+            <li>未オープンのスキットルは<strong>一律1マーク</strong>が同時に付与される</li>
+            <li>複数本が同時に1→2マークなら<strong>一気に複数オープン</strong>も狙える</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-eyebrow">SECTION 05</div>
+        <div class="rule-h3">その他のルール</div>
+        <div class="qa-list">
+          <div class="qa-item">
+            <div class="qa-q">先攻1ターン目に出る特殊なアナウンスは何?</div>
+            <div class="qa-a"><strong>先攻プレイヤーの最初のターン(2投)だけ</strong>は、どの数字を当ててもマーク処理は行われず、<strong>当てた本数がそのままダイレクトに合計得点として加算</strong>される特殊ルールが発動する。<strong>後攻プレイヤーの1ターン目からは、この特殊ルールは適用されず通常通りのマーク処理</strong>になる。</div>
+          </div>
+          <div class="qa-item">
+            <div class="qa-q">コートのサイズと、コート外に出たスキットルの扱いは?</div>
+            <div class="qa-a">基本は<strong>横6m × 縦8mのコート</strong>で、プレイヤーの技量に合わせて自由に調整可能。コート外に出たスキットルは<strong>コートのエンドライン上(境界線の上)</strong>に戻す。他のスキットルとの距離がモルック棒1本分未満の場合は<strong>モルック棒1本分の距離をあけてエンドライン上に配置</strong>する。</div>
+          </div>
+        </div>
+        <div class="rule-summary">
+          <div class="rule-summary-title">POINT</div>
+          <ul>
+            <li>この特殊ルールは<strong>先攻の1ターン目だけ</strong>適用される(後攻は1ターン目から通常ルール)</li>
+            <li>コートサイズは<strong>横6m × 縦8m</strong>が基本、自由に調整可</li>
+            <li>コート外のスキットルは<strong>エンドライン上</strong>に戻す</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-h3">ステータス推移のまとめ</div>
+        <div class="status-flow-container">
+          <div class="status-step">
+            <div class="status-chip flat">フラット</div>
+            <div class="status-text">まだお互いにオープンしていない状態。</div>
+          </div>
+          <div class="status-step">
+            <div class="status-chip one-mark">1マーク</div>
+            <div class="status-text">陣地化まであと1歩。<strong>相手に横取りされる前に早めにオープンを。</strong></div>
+          </div>
+          <div class="status-step">
+            <div class="status-chip open-mark">オープン</div>
+            <div class="status-text"><strong>自分の陣地に。</strong> あとは狙って当ててスコアを獲得しよう。</div>
+          </div>
+          <div class="status-step">
+            <div class="status-chip closed-mark">クローズ</div>
+            <div class="status-text">クローズになると、盤面から排除されます。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-h3">勝つための3大セオリー</div>
+        <div class="theory-wrapper">
+          <div class="theory-box">
+            <div class="theory-title"><span class="theory-num">01</span>数字の大きいスキットルから狙う</div>
+            <div class="theory-desc"><strong>11番・12番といった大きな数字を先に狙う</strong>のが基本戦略。その後のフェーズを有利に進めやすくなります。</div>
+          </div>
+          <div class="theory-box">
+            <div class="theory-title"><span class="theory-num">02</span>近いスキットルから狙う</div>
+            <div class="theory-desc"><strong>狙いやすい手前側のスキットルに確実に当ててマークを重ねる</strong>ことが重要な戦略です。確実に自分の陣地を拡大していく戦略です。</div>
+          </div>
+          <div class="theory-box">
+            <div class="theory-title"><span class="theory-num">03</span>同点以上にしてクローズを狙う</div>
+            <div class="theory-desc">勝利の絶対条件は<strong>「スコアが相手と同点以上であること」</strong>です。大差で負けている状態ではクローズに望みを出しても点差は縮まりません。まず点差を縮めて、勝利に近づいてからクローズで攻めるのがセオリーです。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-h3">カスタムモードの魅力</div>
+        <div class="small" style="margin-bottom:12px;">設定次第で初心者からガチ勢まで全員が白熱できるゲームに仕立てられる、カスタム対戦の主な設定項目です。</div>
+
+        <div class="feature-list">
+          <div class="feature-item" style="border-left-color:#10b981;">
+            <span class="feature-title">3人・4人対戦への拡張(PLAYER COUNT)</span>
+            <span class="feature-desc">2人だけの対戦だけでなく、最大<strong>4人での大乱戦</strong>が可能に。参加者全員がオープンするまでスキットルはクローズされないため、<strong>独走する一人をみんなで囲んで阻止する</strong>熱い駆け引きが生まれます。</span>
+          </div>
+          <div class="feature-item" style="border-left-color:#3b82f6;">
+            <span class="feature-title">マッチフォーマット(MATCH FORMAT)</span>
+            <span class="feature-desc">1セット完結だけでなく、<strong>2本先取〜最大5本先取のセット制形式</strong>に対応。セット間の先攻・後攻の順番を自由に設定でき、本格的な試合を楽しめます。</span>
+          </div>
+          <div class="feature-item" style="border-left-color:#ef4444;">
+            <span class="feature-title">連続ミス失格ルール(BURST SYSTEM)</span>
+            <span class="feature-desc">ONにすると、<strong>3〜6回(スライダーで自由設定)連続でMISS(0マーク)したプレイヤーがそのセットを失格</strong>。サバイバル仕様で、たった1回外すだけで終わるという極限の緊張感がゲームを引き立てます。</span>
+          </div>
+          <div class="feature-item" style="border-left-color:#f59e0b;">
+            <span class="feature-title">ハンデ設定(HANDICAP)</span>
+            <span class="feature-desc">ONにすると、プレイヤーごとに<strong>初期スコアや特定スキットルの初期マーク数を付与</strong>できます。初心者と上級者が混ざった試合でも実力差を補正し、全員が白熱できるゲームにできます。</span>
+          </div>
+          <div class="feature-item" style="border-left-color:#a855f7;">
+            <span class="feature-title">ボーナスマーク設定(BONUS MARKS)</span>
+            <span class="feature-desc">通常の「DOUBLE(×2)」に加え、<strong>「TRIPLE(×3)」ボーナス</strong>を切り替え可能。独自のルールと組み合わせは自由――プレイヤー独自の縛りを設けてゲームをカスタマイズするのも上級者の楽しみ方です。</span>
+          </div>
+          <div class="feature-item" style="border-left-color:#6366f1;">
+            <span class="feature-title">投げ持ち本数の変更(THROWS / TURN)</span>
+            <span class="feature-desc">1ターンに投げる本数を、<strong>「1本」「2本(標準)」「3本」</strong>から選択可能。3本にすると加点とマークが網のように飛び交う乱戦になります。</span>
+          </div>
+          <div class="feature-item" style="border-left-color:#ec4899;">
+            <span class="feature-title">必要マーク数の変更(OPEN MARKS PER SKITTLE)</span>
+            <span class="feature-desc">スキットルがオープンするのに必要なマーク数を、標準の<strong>「2マーク」から「3マーク」</strong>に変更可能。陣地の取り合いに深みを持たせられます。すべてのスキットルに対して変更可能です。</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-h3">アプリの使用方法</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-badge">1</div>
+            <div class="timeline-content">
+              <div class="timeline-title">モード選択とプレイヤー登録</div>
+              <div class="timeline-body">
+                ノーマルまたはカスタム対戦を選択。カスタムでは自由にルールを変更できます。ルールを設定したら <span class="ui-inline primary">GAME START</span> をタップして試合開始。
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-badge">2</div>
+            <div class="timeline-content">
+              <div class="timeline-title">当てたスキットルの選択</div>
+              <div class="timeline-body">
+                モルックを投げてスキットル(6〜12番)を当てたら、画面中央の <span class="ui-inline">BOARD &amp; INPUT</span> 盤面からその数字エリアをタップして選択状態(枠が緑線に発光)にします。複数本当たった場合は、当てた分すべてタップしてください。
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-badge">3</div>
+            <div class="timeline-content">
+              <div class="timeline-title">単発ヒットのマーク数を指定</div>
+              <div class="timeline-body">
+                <strong>狙ったスキットルを1本だけ当てた場合</strong>は、下部パネルの <span class="ui-inline">SINGLE</span> 行から確定したいマーク数をタップして選択確定にします。
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-badge">4</div>
+            <div class="timeline-content">
+              <div class="timeline-title">複数当たり・ミスは各専用ボタンへ</div>
+              <div class="timeline-body">
+                <strong>2本以上まとめて当たった場合</strong>は、対象ピンを選択した後に <span class="ui-inline multi">MULTI</span> ブロックをタップします。1本も当たらなかった場合(ノーヒット)は、一番下の <span class="ui-inline miss">MISS</span> ブロックを1タップするだけで自動記録されます。
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-badge">5</div>
+            <div class="timeline-content">
+              <div class="timeline-title">入力ミスはいつでも取り消し可能</div>
+              <div class="timeline-body">
+                画面下部には <span class="ui-inline">‹ UNDO</span> ボタンが常時配置されています。押し間違いやカウントの食い違いがあっても、いつでも正確に1手前の状態に巻き戻せるので安心です。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+      <button class="secondary large-btn" onclick="backToTopMenu()" style="width:100%;">‹ メインメニューに戻る</button>
+    </div>
+  </div>
+
+  <!-- ============== MATCH HISTORY ============== -->
+  <div id="historyScreen" class="hidden">
+    <div class="topbar">
+      <button class="theme-btn" onclick="backToTopMenu()">‹ MENU</button>
+    </div>
+    <div class="card">
+      <div class="screen-header">
+        <div class="setup-title screen-title-sm">対戦履歴</div>
+        <div class="setup-subtitle">MATCH HISTORY</div>
+      </div>
+
+      <div id="historyListContainer" class="history-list"></div>
+
+      <hr class="section-divider">
+      <button class="danger large-btn" onclick="confirmClearHistory()" style="width:100%; margin-bottom:10px;">履歴をすべて削除</button>
+      <button class="secondary large-btn" onclick="backToTopMenu()" style="width:100%;">‹ メインメニューに戻る</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============== OVERLAYS ============== -->
+<div class="confirm-overlay hidden" id="confirmModal">
+  <div class="confirm-box">
+    <div class="confirm-text" id="confirmText"></div>
+    <div class="confirm-buttons">
+      <button class="secondary" onclick="closeConfirm()">キャンセル</button>
+      <button class="primary" onclick="executePending()">確定</button>
+    </div>
+  </div>
+</div>
+
+<div class="confirm-overlay hidden" id="nextSetModal">
+  <div class="confirm-box" style="text-align: center;">
+    <div class="winner" id="nextSetWinnerText" style="font-size: 24px; color: var(--green);"></div>
+    <div class="confirm-text" id="nextSetScoreText" style="text-align: center; margin: 10px 0; transform: var(--skew);"></div>
+
+    <div id="setResultTableArea"></div>
+
+    <hr class="section-divider">
+    <div class="next-set-order-label">次のセットの投げ順（先攻順）を全員個別に再設定してください</div>
+
+    <div id="orderConfigContainer" class="order-config-container"></div>
+
+    <hr class="section-divider">
+    <div class="confirm-buttons" style="grid-template-columns: 1fr;">
+      <button class="primary" onclick="validateAndExecuteNextSet()">次セットをこの順序で開始</button>
+    </div>
+  </div>
+</div>
+
+<div class="confirm-overlay hidden" id="winnerModal">
+  <div class="confirm-box">
+    <div class="winner" id="winnerText"></div>
+    <div id="statsArea"></div>
+    <button class="secondary large-btn" id="modalUndoBtn" onclick="undoFromWinner()" style="margin-top:16px;">‹ UNDO (このセットをやり直す)</button>
+    <button class="primary large-btn" onclick="backToTopMenuFromWinner()" style="margin-top:12px;">TOP MENU</button>
+  </div>
+</div>
+
+<div id="turnEndOverlay" class="turn-end-overlay hidden">
+  <div class="howan-box" id="howanBox">
+    <div class="howan-title" id="howanPlayerName">PLAYER END</div>
+    <div class="howan-symbols-row" id="howanSymbolsRow"></div>
+  </div>
+</div>
+
+<div class="confirm-overlay hidden" id="infoModal">
+  <div class="confirm-box">
+    <div class="winner" id="infoModalTitle" style="font-size:18px;"></div>
+    <div class="confirm-text" id="infoModalBody" style="font-size:13.5px; font-weight:400; line-height:1.75;"></div>
+    <button class="secondary large-btn" onclick="closeInfoModal()" style="margin-top:16px;">閉じる</button>
+  </div>
+</div>
+
+<div class="confirm-overlay hidden" id="historyDetailModal">
+  <div class="confirm-box">
+    <div class="winner" id="historyDetailTitle"></div>
+    <div class="small" id="historyDetailMeta" style="text-align:center; margin-bottom:6px;"></div>
+    <div id="historyDetailStats"></div>
+    <button class="secondary large-btn" onclick="closeHistoryDetail()" style="margin-top:16px;">閉じる</button>
+  </div>
+</div>
+
+<div id="toastBanner" class="toast-banner hidden"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
