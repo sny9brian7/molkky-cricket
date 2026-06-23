@@ -15,7 +15,11 @@
 - `js/app.js` 内のスコア計算・オープン/クローズ判定（`isOpen`, `isClosedGlobally`, `processSingle`, `processMulti`等）は
   ゲームルールそのものなので、ロジックを変える際はルール仕様の変更だと自覚して触ること。
   UI/デザインだけを変えたい場合はCSSとHTMLの構造側で完結させる。
-- `icons/icon-192.png` / `icons/icon-512.png` は `scripts/gen-icons.js`(Node標準の`zlib`だけでPNGを直接エンコード、外部依存なし)で生成したターゲット柄のプレースホルダー。デザインを変えたい場合は同スクリプトの`drawIcon()`を編集して再実行(`node scripts/gen-icons.js`)すれば再生成できる。
+- `icons/icon-192.png` / `icons/icon-512.png` は2段階のスクリプトで生成している。
+  1. `node scripts/gen-icons.js` — ホーム画面の6色を使った同心円+ぼかしの土台(`icon-*-base.png`)をNode標準の`zlib`だけで直接エンコード(外部依存なし)
+  2. `scripts/gen-icons-add-text.ps1` をPowerShellでドットソース実行(`. scripts/gen-icons-add-text.ps1`、`&`呼び出しではなく`.`を使うこと) — 土台の上にSystem.Drawingで「モルクリ！」の文字(HG丸ゴシックM-PRO)を合成し、最終的な`icon-192.png`/`icon-512.png`を書き出す
+  デザインを変える場合は`gen-icons.js`の`drawIcon()`(色・ぼかし)と`gen-icons-add-text.ps1`(文字・フォント・配置)をそれぞれ編集して、この順で再実行する。
+  注意: `.ps1`ファイル内に日本語コメントを書くと、この環境ではファイル実行時に後続行の解析が壊れる現象を確認しているため、コメントはASCIIのみにすること(文字列自体はUnicodeコードポイントから組み立てれば問題ない)。
 - 効果音(mark/multi/open/close/miss)は `音声/` フォルダ内のmp3ファイルを使用する。フォルダ名やファイル名を変更・移動した場合は、`js/app.js` 先頭付近の `SOUND_DIR` / `SOUND_FILES` の2箇所だけ書き換えれば追従する(他の処理は変更不要)。
 
 ## 動作確認方法

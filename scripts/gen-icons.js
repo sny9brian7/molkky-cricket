@@ -53,25 +53,71 @@ function encodePNG(width, height, rgba) {
 
 function lerp(a, b, t) { return a + (b - a) * t; }
 
+/* 簡易ボックスブラー(横→縦)を数回繰り返すことでガウシアンブラーに近い
+   「ぼかし」効果を作る。外部ライブラリなしで実装するための割り切り。 */
+function boxBlurPass(rgba, width, height, radius) {
+  const temp = Buffer.alloc(rgba.length);
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      let r = 0, g = 0, b = 0, count = 0;
+      for (let dx = -radius; dx <= radius; dx++) {
+        const xx = x + dx;
+        if (xx < 0 || xx >= width) continue;
+        const idx = (y * width + xx) * 4;
+        r += rgba[idx]; g += rgba[idx + 1]; b += rgba[idx + 2]; count++;
+      }
+      const idx = (y * width + x) * 4;
+      temp[idx] = Math.round(r / count);
+      temp[idx + 1] = Math.round(g / count);
+      temp[idx + 2] = Math.round(b / count);
+      temp[idx + 3] = 255;
+    }
+  }
+  const out = Buffer.alloc(rgba.length);
+  for (let x = 0; x < width; x++) {
+    for (let y = 0; y < height; y++) {
+      let r = 0, g = 0, b = 0, count = 0;
+      for (let dy = -radius; dy <= radius; dy++) {
+        const yy = y + dy;
+        if (yy < 0 || yy >= height) continue;
+        const idx = (yy * width + x) * 4;
+        r += temp[idx]; g += temp[idx + 1]; b += temp[idx + 2]; count++;
+      }
+      const idx = (y * width + x) * 4;
+      out[idx] = Math.round(r / count);
+      out[idx + 1] = Math.round(g / count);
+      out[idx + 2] = Math.round(b / count);
+      out[idx + 3] = 255;
+    }
+  }
+  return out;
+}
+
+function blur(rgba, width, height, radius, iterations) {
+  let buf = rgba;
+  for (let i = 0; i < iterations; i++) buf = boxBlurPass(buf, width, height, radius);
+  return buf;
+}
+
 function drawIcon(size) {
   const rgba = Buffer.alloc(size * size * 4);
   const cx = size / 2;
-  const cy = size / 2;
-  const half = size / 2;
+  const cy = size * 0.36; // 上2/3に同心円、下1/3を文字エリアに残す
+  const circleR = size * 0.30;
 
   const white = [255, 255, 255];
-  // ホーム画面の6つのメニュー色を、色相の順に並べた虹色ホイール
-  const wheelColors = [
-    [249, 115, 22],  // レビュー(オレンジ)  --menu-border-review
-    [245, 158, 11],  // システム設定(アンバー) --menu-border-system
-    [16, 185, 129],  // ノーマル対戦(緑)    --menu-border-normal
-    [6, 182, 212],   // カスタム対戦(シアン) --menu-border-custom
-    [139, 92, 246],  // 対戦履歴(紫)       --menu-border-history
-    [236, 72, 153],  // ルール解説(ピンク)   --menu-border-rule
+  // ホーム画面の6つのメニュー色を、色相の順に並べた虹色(中心→外周)
+  const ringColors = [
+    [249, 115, 22],  // レビュー(オレンジ)
+    [245, 158, 11],  // システム設定(アンバー)
+    [16, 185, 129],  // ノーマル対戦(緑)
+    [6, 182, 212],   // カスタム対戦(シアン)
+    [139, 92, 246],  // 対戦履歴(紫)
+    [236, 72, 153],  // ルール解説(ピンク、最外周)
   ];
 
-  const safeR = half * 0.8;
-  const segmentAngle = (Math.PI * 2) / wheelColors.length;
+  const bandWidth = circleR / ringColors.length;
+  const gapRatio = 0.12; // 各リングの境目に入れる白い隙間の割合
 
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
@@ -80,11 +126,10 @@ function drawIcon(size) {
       const r = Math.sqrt(dx * dx + dy * dy);
 
       let rgb = white;
-      if (r <= safeR) {
-        let angle = Math.atan2(dy, dx); // -PI..PI
-        if (angle < 0) angle += Math.PI * 2; // 0..2PI
-        const segIndex = Math.floor(angle / segmentAngle) % wheelColors.length;
-        rgb = wheelColors[segIndex];
+      if (r <= circleR) {
+        const bandIndex = Math.min(ringColors.length - 1, Math.floor(r / bandWidth));
+        const posInBand = (r - bandIndex * bandWidth) / bandWidth; // 0..1
+        if (posInBand > gapRatio) rgb = ringColors[bandIndex];
       }
 
       const idx = (y * size + x) * 4;
@@ -94,13 +139,18 @@ function drawIcon(size) {
       rgba[idx + 3] = 255;
     }
   }
-  return rgba;
+
+  const blurRadius = Math.max(1, Math.round(size * 0.012));
+  return blur(rgba, size, size, blurRadius, 3);
 }
 
+/* このスクリプトは同心円+ぼかしの「土台」だけを描く。
+   文字(「モルクリ！」)は gen-icons-add-text.ps1 が
+   System.Drawingでこの土台の上に合成する。 */
 const outDir = path.join(__dirname, '..', 'icons');
 for (const size of [192, 512]) {
   const rgba = drawIcon(size);
   const png = encodePNG(size, size, rgba);
-  fs.writeFileSync(path.join(outDir, `icon-${size}.png`), png);
-  console.log(`wrote icon-${size}.png (${png.length} bytes)`);
+  fs.writeFileSync(path.join(outDir, `icon-${size}-base.png`), png);
+  console.log(`wrote icon-${size}-base.png (${png.length} bytes)`);
 }
