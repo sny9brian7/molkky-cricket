@@ -404,6 +404,16 @@ strong { color: var(--txt); font-weight: 900; }
 .m-multi-circle { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 2.5px solid currentColor; border-radius: 50%; font-size: 11px; font-weight: 900; }
 [data-theme^="neon-"] .m-multi-circle { width: 20px; height: 20px; border-width: 2px; border-radius: 0%; font-family: var(--font-display); font-size: 12px; }
 
+/* ============== APP SPLASH (アプリを開いた直後の起動画面) ============== */
+#appSplashScreen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 2000; }
+.app-splash-icon { width: 38vw; max-width: 200px; min-width: 120px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); animation: appSplashPulse 1.1s ease-in-out infinite; }
+
+@keyframes appSplashPulse {
+  0% { transform: scale(0.92); opacity: .75; }
+  50% { transform: scale(1.02); opacity: 1; }
+  100% { transform: scale(0.92); opacity: .75; }
+}
+
 /* ============== TURN-END OVERLAY ============== */
 .turn-end-overlay { position: fixed; inset: 0; background: rgba(8, 12, 22, 0.55); backdrop-filter: blur(3px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; }
 [data-theme^="neon-"] .turn-end-overlay { background: rgba(3, 5, 10, 0.86); backdrop-filter: blur(5px); }
@@ -701,6 +711,8 @@ button:active { transform: scale(.96); }
 .skittle-row-btn { display: grid; align-items: stretch; background: var(--sub); border: 2px solid transparent; border-radius: var(--radius-sm); overflow: hidden; cursor: pointer; padding: 0; transition: .15s; }
 .skittle-row-btn:active { transform: scale(.985); }
 .skittle-row-btn.selected { border-color: var(--green) !important; box-shadow: 0 0 14px rgba(5,150,105,0.4); }
+.skittle-row-btn.row-closed { cursor: not-allowed; opacity: .55; }
+.skittle-row-btn.row-closed:active { transform: none; }
 
 .mini-mark { display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: var(--txt2); background: transparent; position: relative; }
 .mini-mark::before { content: ""; position: absolute; font-size: 18px; font-weight: 900; opacity: var(--mini-mark-opacity); color: var(--txt); }

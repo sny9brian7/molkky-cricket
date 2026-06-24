@@ -453,6 +453,15 @@ function switchScreen(screenId) {
   });
 }
 
+/* ---- 起動スプラッシュ（アプリを開いた直後にアイコンを表示） ---- */
+const APP_SPLASH_DURATION_MS = 2200;
+
+function showAppSplashOnBoot() {
+  const splash = document.getElementById("appSplashScreen");
+  if (!splash) return;
+  setTimeout(() => { splash.classList.add("hidden"); }, APP_SPLASH_DURATION_MS);
+}
+
 function openSetup(mode) {
   gameMode = mode;
 
@@ -668,6 +677,10 @@ function buildIntegratedBoardUI() {
 }
 
 function handleSkittleRowClick(num) {
+  if (isClosedGlobally(num)) {
+    showToast(`${num}番はすでにクローズされています。選択できません。`);
+    return;
+  }
   if (selectedMulti.includes(num)) {
     selectedMulti = selectedMulti.filter(x => x !== num);
     if (selectedSingle === num) {
@@ -1122,9 +1135,13 @@ function updateUI() {
     });
 
     const centerEl = document.getElementById(`skCenter_${num}`);
+    const closed = isClosedGlobally(num);
     if (centerEl) {
-      centerEl.className = `center-num-btn ${isClosedGlobally(num) ? 'closed-num' : ''}`;
+      centerEl.className = `center-num-btn ${closed ? 'closed-num' : ''}`;
     }
+
+    const rowEl = document.getElementById(`skRow_${num}`);
+    if (rowEl) rowEl.classList.toggle("row-closed", closed);
   });
 
   syncBoardSelectionUI();
@@ -1452,17 +1469,6 @@ function createStatsHTML() {
 const MATCH_LOG_KEY = 'molkky_match_log';
 const MATCH_LOG_MAX = 50;
 
-/* 履歴の削除は誤操作防止のための簡易パスワードのみ（本格的な認証ではない）。
-   変更したい場合はこの定数を書き換える。 */
-const HISTORY_ADMIN_PASSWORD = '0523';
-
-function checkAdminPassword() {
-  const input = prompt("管理者パスワードを入力してください(削除の確認用)");
-  if (input === null) return false;
-  if (input !== HISTORY_ADMIN_PASSWORD) { showToast("パスワードが違います。"); return false; }
-  return true;
-}
-
 function loadMatchLog() {
   try {
     const raw = localStorage.getItem(MATCH_LOG_KEY);
@@ -1555,7 +1561,6 @@ function renderHistoryList() {
 }
 
 function deleteHistoryEntry(idx) {
-  if (!checkAdminPassword()) return;
   openConfirm("この履歴を削除しますか?", () => {
     const log = loadMatchLog();
     log.splice(idx, 1);
@@ -1565,7 +1570,6 @@ function deleteHistoryEntry(idx) {
 }
 
 function confirmClearHistory() {
-  if (!checkAdminPassword()) return;
   openConfirm("対戦履歴をすべて削除しますか?\nこの操作は取り消せません。", () => {
     localStorage.removeItem(MATCH_LOG_KEY);
     renderHistoryList();
@@ -1761,6 +1765,7 @@ function submitReview() {
 
 /* ---- 初期化 ---- */
 document.addEventListener('DOMContentLoaded', () => {
+  showAppSplashOnBoot();
   buildSkittleSetupUI();
   restoreThemeFromStorage();
   restoreSoundFromStorage();
